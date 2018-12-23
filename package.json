@@ -1,0 +1,15 @@
+{
+    "private": true,
+    "devDependencies": {
+        "json-loader": "^0.5.7",
+        "webpack": "^4.28.2",
+        "webpack-cli": "^3.1.2"
+    },
+    "dependencies": {
+        "amazon-cognito-auth-js": "^1.2.4",
+        "node": "^11.5.0"
+    },
+    "scripts": {
+        "build": "webpack"
+    }
+}
