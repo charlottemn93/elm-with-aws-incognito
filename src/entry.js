@@ -32,11 +32,12 @@ app.ports.signup.subscribe(function (data) {
 
   userPool.signUp(data.username, data.password, attributeList, null, function (err, result) {
     if (err) {
-      console.log(err.message || JSON.stringify(err));
+      var errorMessage = err.message || JSON.stringify(err);
+      app.ports.errors.send(errorMessage);
       return;
     }
     var cognitoUser = result.user;
-    console.log('user name is ' + cognitoUser.getUsername());
+    app.ports.signupSuccess.send({ username: cognitoUser.getUsername() });
   });
 });
 

@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (Html, input, text, br, div, h2, button, label)
+import Html exposing (Html, input, text, br, div, h1, button, node, label)
 import Html.Events exposing (onClick, onInput)
 import Html.Attributes exposing (..)
 import Debug
@@ -16,14 +16,16 @@ type alias Username = String
 
 type alias Password = String
 
+type alias ErrorMessage = Maybe String
+
 type Model
-    = LoggedOut EmailAddress Username Password
-    | AwaitingVerification
+    = LoggedOut EmailAddress Username Password ErrorMessage
+    | AwaitingVerification Username
 
 
 initialModel : Model
 initialModel =
-    LoggedOut "" "" ""
+    LoggedOut "" "" "" (Just "")
 
 init : ( Model, Cmd Msg )
 init =
@@ -37,7 +39,7 @@ type Msg
     | SetPassword Password
     | SetUsername Username
     | CognitoError String
-    | CognitoSignupSuccess { emailAddress : String }
+    | CognitoSignupSuccess { username : String }
 
 --signUp :
 
@@ -45,30 +47,30 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case model of
-        AwaitingVerification ->
+        AwaitingVerification username ->
             case msg of
                 _ ->
                     ( model, Cmd.none )
 
-        LoggedOut currentEmailAddress currentUsername currentPassword ->
+        LoggedOut currentEmailAddress currentUsername currentPassword errorMessage ->
             case Debug.log "update" msg of
                 DoSignUp ->
                     ( model, Cognito.signup { emailAddress = currentEmailAddress, password = currentPassword, username = currentUsername } )
 
                 SetEmailAddress emailAddress ->
-                    ( LoggedOut emailAddress currentUsername currentPassword, Cmd.none )
+                    ( LoggedOut emailAddress currentUsername currentPassword errorMessage, Cmd.none )
 
                 SetPassword password ->
-                    ( LoggedOut currentEmailAddress currentUsername password, Cmd.none )
+                    ( LoggedOut currentEmailAddress currentUsername password errorMessage, Cmd.none )
 
                 SetUsername username ->
-                    ( LoggedOut currentEmailAddress username currentPassword, Cmd.none )
+                    ( LoggedOut currentEmailAddress username currentPassword errorMessage, Cmd.none )
 
                 CognitoError error ->
-                    ( model, Cmd.none )
+                    ( LoggedOut currentEmailAddress currentUsername currentPassword (Just error), Cmd.none )
 
-                CognitoSignupSuccess emailAddress ->
-                    ( model, Cmd.none )
+                CognitoSignupSuccess { username } ->
+                    ( AwaitingVerification username, Cmd.none )
 
 
 
@@ -78,14 +80,23 @@ update msg model =
 view : Model -> Html Msg
 view model =
     case model of
-        AwaitingVerification ->
+        AwaitingVerification username ->
             div []
-                [ h2 [] [ text "Thanks for signing up! Please verify your account" ]
+                [ h1 [] [ text ("Thanks for signing up, " ++ username ++ "! Please verify your account") ]
                 ]
 
-        LoggedOut emailAddress username password ->
+        LoggedOut emailAddress username password errorMessage ->
             div []
-                [ h2 [] [ text "Welcome! Please sign up." ]
+                [ node "error" 
+                    []
+                    [ case errorMessage of
+                        Just err ->
+                            text err
+
+                        Nothing ->
+                            text ""
+                    ]
+                , h1 [] [ text "Welcome! Please sign up." ]
                 , br [] []
                 , label [] [ text "Email address" ]
                 , input [ onInput SetEmailAddress ] []

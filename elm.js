@@ -4789,22 +4789,27 @@ var author$project$Cognito$signupSuccess = _Platform_incomingPort(
 	'signupSuccess',
 	A2(
 		elm$json$Json$Decode$andThen,
-		function (emailAddress) {
+		function (username) {
 			return elm$json$Json$Decode$succeed(
-				{emailAddress: emailAddress});
+				{username: username});
 		},
-		A2(elm$json$Json$Decode$field, 'emailAddress', elm$json$Json$Decode$string)));
+		A2(elm$json$Json$Decode$field, 'username', elm$json$Json$Decode$string)));
 var author$project$Main$CognitoError = function (a) {
 	return {$: 'CognitoError', a: a};
 };
 var author$project$Main$CognitoSignupSuccess = function (a) {
 	return {$: 'CognitoSignupSuccess', a: a};
 };
-var author$project$Main$LoggedOut = F3(
-	function (a, b, c) {
-		return {$: 'LoggedOut', a: a, b: b, c: c};
+var author$project$Main$LoggedOut = F4(
+	function (a, b, c, d) {
+		return {$: 'LoggedOut', a: a, b: b, c: c, d: d};
 	});
-var author$project$Main$initialModel = A3(author$project$Main$LoggedOut, '', '', '');
+var author$project$Main$initialModel = A4(
+	author$project$Main$LoggedOut,
+	'',
+	'',
+	'',
+	elm$core$Maybe$Just(''));
 var elm$core$Platform$Cmd$batch = _Platform_batch;
 var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
 var author$project$Main$init = _Utils_Tuple2(author$project$Main$initialModel, elm$core$Platform$Cmd$none);
@@ -4839,15 +4844,20 @@ var author$project$Cognito$signup = _Platform_outgoingPort(
 					elm$json$Json$Encode$string($.username))
 				]));
 	});
+var author$project$Main$AwaitingVerification = function (a) {
+	return {$: 'AwaitingVerification', a: a};
+};
 var elm$core$Debug$log = _Debug_log;
 var author$project$Main$update = F2(
 	function (msg, model) {
 		if (model.$ === 'AwaitingVerification') {
+			var username = model.a;
 			return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
 		} else {
 			var currentEmailAddress = model.a;
 			var currentUsername = model.b;
 			var currentPassword = model.c;
+			var errorMessage = model.d;
 			var _n2 = A2(elm$core$Debug$log, 'update', msg);
 			switch (_n2.$) {
 				case 'DoSignUp':
@@ -4858,24 +4868,33 @@ var author$project$Main$update = F2(
 				case 'SetEmailAddress':
 					var emailAddress = _n2.a;
 					return _Utils_Tuple2(
-						A3(author$project$Main$LoggedOut, emailAddress, currentUsername, currentPassword),
+						A4(author$project$Main$LoggedOut, emailAddress, currentUsername, currentPassword, errorMessage),
 						elm$core$Platform$Cmd$none);
 				case 'SetPassword':
 					var password = _n2.a;
 					return _Utils_Tuple2(
-						A3(author$project$Main$LoggedOut, currentEmailAddress, currentUsername, password),
+						A4(author$project$Main$LoggedOut, currentEmailAddress, currentUsername, password, errorMessage),
 						elm$core$Platform$Cmd$none);
 				case 'SetUsername':
 					var username = _n2.a;
 					return _Utils_Tuple2(
-						A3(author$project$Main$LoggedOut, currentEmailAddress, username, currentPassword),
+						A4(author$project$Main$LoggedOut, currentEmailAddress, username, currentPassword, errorMessage),
 						elm$core$Platform$Cmd$none);
 				case 'CognitoError':
 					var error = _n2.a;
-					return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+					return _Utils_Tuple2(
+						A4(
+							author$project$Main$LoggedOut,
+							currentEmailAddress,
+							currentUsername,
+							currentPassword,
+							elm$core$Maybe$Just(error)),
+						elm$core$Platform$Cmd$none);
 				default:
-					var emailAddress = _n2.a;
-					return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+					var username = _n2.a.username;
+					return _Utils_Tuple2(
+						author$project$Main$AwaitingVerification(username),
+						elm$core$Platform$Cmd$none);
 			}
 		}
 	});
@@ -4912,6 +4931,11 @@ var elm$html$Html$div = _VirtualDom_node('div');
 var elm$html$Html$h2 = _VirtualDom_node('h2');
 var elm$html$Html$input = _VirtualDom_node('input');
 var elm$html$Html$label = _VirtualDom_node('label');
+var elm$virtual_dom$VirtualDom$node = function (tag) {
+	return _VirtualDom_node(
+		_VirtualDom_noScript(tag));
+};
+var elm$html$Html$node = elm$virtual_dom$VirtualDom$node;
 var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
 var elm$html$Html$Attributes$stringProperty = F2(
@@ -5027,6 +5051,7 @@ var elm$html$Html$Events$onInput = function (tagger) {
 };
 var author$project$Main$view = function (model) {
 	if (model.$ === 'AwaitingVerification') {
+		var username = model.a;
 		return A2(
 			elm$html$Html$div,
 			_List_Nil,
@@ -5037,18 +5062,34 @@ var author$project$Main$view = function (model) {
 					_List_Nil,
 					_List_fromArray(
 						[
-							elm$html$Html$text('Thanks for signing up! Please verify your account')
+							elm$html$Html$text('Thanks for signing up!' + (username + ' Please verify your account'))
 						]))
 				]));
 	} else {
 		var emailAddress = model.a;
 		var username = model.b;
 		var password = model.c;
+		var errorMessage = model.d;
 		return A2(
 			elm$html$Html$div,
 			_List_Nil,
 			_List_fromArray(
 				[
+					A3(
+					elm$html$Html$node,
+					'error',
+					_List_Nil,
+					_List_fromArray(
+						[
+							function () {
+							if (errorMessage.$ === 'Just') {
+								var err = errorMessage.a;
+								return elm$html$Html$text(err);
+							} else {
+								return elm$html$Html$text('');
+							}
+						}()
+						])),
 					A2(
 					elm$html$Html$h2,
 					_List_Nil,

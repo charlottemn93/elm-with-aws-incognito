@@ -4,4 +4,4 @@ port signup : { emailAddress: String, password: String, username: String } -> Cm
 
 port errors : (String -> msg) -> Sub msg  --JS is gonna send a string and we'll receive it in Elm as a subscription
 
-port signupSuccess : ({ emailAddress: String} -> msg) -> Sub msg
+port signupSuccess : ({ username: String} -> msg) -> Sub msg
