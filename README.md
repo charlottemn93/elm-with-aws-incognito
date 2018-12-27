@@ -1,5 +1,7 @@
 # elm-with-aws-incognito
 
+Currently this app is an elm sign up page that only creates an unverified user (more functionality to come!)
+
 Ensure you're running Elm 0.19
 
 In order to run this, you need to have created a cognito user pool. The defaults are fine, make sure the only required attribute is are email address and open id.
