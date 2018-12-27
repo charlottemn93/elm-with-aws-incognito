@@ -6,11 +6,11 @@ In order to run this, you need to have created a cognito user pool (defaults are
 
 Create a file ids/cognito_ids.js, adding the following:
 
-```module.exports = {
+`module.exports = {
     clientId: '', // your app client id
     appWebDomain: '', // your app web domain
     userPoolId: '', // your user pool id
-};```
+};`
 
 To build
 
