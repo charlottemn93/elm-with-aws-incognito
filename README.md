@@ -1,12 +1,14 @@
 # elm-with-aws-incognito
 
-Currently this app is an elm sign up page that only creates an unverified user (more functionality to come!)
+*Currently this app is an elm sign up page that only creates an unverified user (more functionality to come!)*
 
-Ensure you're running Elm 0.19
+# Prerequisites
 
-In order to run this, you need to have created a cognito user pool. The defaults are fine, make sure the only required attribute is are email address and open id.
+Ensure you're running Elm 0.19 (otherwise, the Elm code will not compile)
 
-Create a new file ids/cognito_ids.js, with the following in it:
+Create a cognito user pool. The defaults provided by AWS on creation are fine except for attributes - please ensure the only required attributes are email address and open id.
+
+Create a new file `ids/cognito_ids.js`, with the following in it:
 
 ```
 module.exports = {
@@ -26,4 +28,4 @@ module.exports = {
 
 `elm reactor`
 
-enter `http://localhost:8000/elm-cognito.html` in browser tab
+enter `http://localhost:8000/elm-cognito.html` in a browser tab
