@@ -2,23 +2,25 @@
 
 Ensure you're running Elm 0.19
 
-In order to run this, you need to have created a cognito user pool (defaults are fine, making sure only attributes required are email address)
+In order to run this, you need to have created a cognito user pool. The defaults are fine, make sure the only required attribute is are email address and open id.
 
-Create a file ids/cognito_ids.js, adding the following:
+Create a new file ids/cognito_ids.js, with the following in it:
 
-`module.exports = {
+```
+module.exports = {
     clientId: '', // your app client id
     appWebDomain: '', // your app web domain
     userPoolId: '', // your user pool id
-};`
+};
+```
 
-To build
+# To build
 
 `npm run build`
 
 `elm make --output elm.js src/Main.elm`
 
-To run
+# To run
 
 `elm reactor`
 
