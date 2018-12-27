@@ -7,6 +7,8 @@
     },
     "dependencies": {
         "amazon-cognito-auth-js": "^1.2.4",
+        "amazon-cognito-identity-js": "^3.0.6",
+        "elm-format": "^0.8.1",
         "node": "^11.5.0"
     },
     "scripts": {
