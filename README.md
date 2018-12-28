@@ -1,4 +1,4 @@
-# elm-with-aws-incognito
+# elm-with-aws-cognito
 
 *Currently this app is an elm sign up page that only creates an unverified user (more functionality to come!)*
 
