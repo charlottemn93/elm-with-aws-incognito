@@ -13,7 +13,6 @@ Create a new file `ids/cognito_ids.js`, with the following in it:
 ```
 module.exports = {
     clientId: '', // your app client id
-    appWebDomain: '', // your app web domain
     userPoolId: '', // your user pool id
 };
 ```
