@@ -1,3 +1,5 @@
+import './main.css';
+
 //Set up Cognito
 var cognitoUserPoolIds = require('../ids/cognito_ids');
 

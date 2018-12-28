@@ -4928,7 +4928,7 @@ var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 var elm$html$Html$br = _VirtualDom_node('br');
 var elm$html$Html$button = _VirtualDom_node('button');
 var elm$html$Html$div = _VirtualDom_node('div');
-var elm$html$Html$h2 = _VirtualDom_node('h2');
+var elm$html$Html$h1 = _VirtualDom_node('h1');
 var elm$html$Html$input = _VirtualDom_node('input');
 var elm$html$Html$label = _VirtualDom_node('label');
 var elm$virtual_dom$VirtualDom$node = function (tag) {
@@ -5058,11 +5058,11 @@ var author$project$Main$view = function (model) {
 			_List_fromArray(
 				[
 					A2(
-					elm$html$Html$h2,
+					elm$html$Html$h1,
 					_List_Nil,
 					_List_fromArray(
 						[
-							elm$html$Html$text('Thanks for signing up!' + (username + ' Please verify your account'))
+							elm$html$Html$text('Thanks for signing up, ' + (username + '! Please verify your account'))
 						]))
 				]));
 	} else {
@@ -5091,7 +5091,7 @@ var author$project$Main$view = function (model) {
 						}()
 						])),
 					A2(
-					elm$html$Html$h2,
+					elm$html$Html$h1,
 					_List_Nil,
 					_List_fromArray(
 						[

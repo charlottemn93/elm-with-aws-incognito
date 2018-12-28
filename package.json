@@ -9,7 +9,9 @@
         "amazon-cognito-auth-js": "^1.2.4",
         "amazon-cognito-identity-js": "^3.0.6",
         "elm-format": "^0.8.1",
-        "node": "^11.5.0"
+        "node": "^11.5.0",
+        "css-loader": "^0.23.1",
+        "style-loader": "^0.13.0"
     },
     "scripts": {
         "build": "webpack"
