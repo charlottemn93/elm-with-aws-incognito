@@ -2,6 +2,8 @@
 
 *Currently this app is an elm sign up page that only creates an unverified user (more functionality to come!)*
 
+More information on elm with aws cognito: https://medium.com/@charlotteneill/elm-with-aws-cognito-8eae4fb858d0 
+
 # Prerequisites
 
 Ensure you're running Elm 0.19 (otherwise, the Elm code will not compile)
