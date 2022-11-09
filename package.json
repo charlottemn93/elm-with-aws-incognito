@@ -10,7 +10,7 @@
         "amazon-cognito-identity-js": "^3.0.6",
         "elm-format": "^0.8.1",
         "node": "^11.5.0",
-        "css-loader": "^0.23.1",
+        "css-loader": "^6.7.1",
         "style-loader": "^0.13.0"
     },
     "scripts": {
